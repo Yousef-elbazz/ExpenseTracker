@@ -11,5 +11,6 @@ namespace ExpenseTracker.API.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Budget> Budgets { get; set; }
     }
 }

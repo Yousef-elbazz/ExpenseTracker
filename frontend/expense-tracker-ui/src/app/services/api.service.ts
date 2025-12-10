@@ -45,4 +45,13 @@ export class ApiService {
   deleteExpense(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/expenses/${id}`);
   }
+
+  // Budget
+  getCurrentBudget(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/budget/current`);
+  }
+
+  setBudget(budget: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/budget`, budget);
+  }
 }

@@ -43,6 +43,37 @@
         </div>
       </mat-card-content>
     </mat-card>
+
+    <!-- Budget Tracker Card -->
+    <mat-card class="summary-card budget-card">
+      <div class="card-icon budget">
+        <mat-icon>account_balance_wallet</mat-icon>
+      </div>
+      <div class="card-content">
+        <div class="card-label">Monthly Budget</div>
+        <div class="card-value" *ngIf="budgetLimit > 0; else noBudget">
+          {{ budgetLimit | currency }}
+        </div>
+        <ng-template #noBudget>
+          <div class="card-value">Not Set</div>
+        </ng-template>
+        <div class="budget-progress" *ngIf="budgetLimit > 0">
+          <div class="progress-bar">
+            <div class="progress-fill" 
+                 [style.width.%]="budgetPercentage"
+                 [class.warning]="showBudgetWarning"></div>
+          </div>
+          <div class="progress-text">
+            <span>{{ budgetPercentage }}% used</span>
+            <mat-icon *ngIf="showBudgetWarning" class="warning-icon">warning</mat-icon>
+          </div>
+        </div>
+        <button mat-button color="primary" (click)="setBudget()" class="set-budget-btn">
+          <mat-icon>{{ budgetLimit > 0 ? 'edit' : 'add' }}</mat-icon>
+          {{ budgetLimit > 0 ? 'Update Budget' : 'Set Budget' }}
+        </button>
+      </div>
+    </mat-card>
   </div>
 
   <mat-card class="monthly-summary-card">

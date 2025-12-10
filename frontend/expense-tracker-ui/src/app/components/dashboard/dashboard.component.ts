@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ApiService } from '../../services/api.service';
 import { Expense } from '../../models/expense';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,11 +20,15 @@ export class DashboardComponent implements OnInit {
   monthlySummary: any[] = [];
   totalTransactions: number = 0;
   currentMonthTotal: number = 0;
+  budgetLimit: number = 0;
+  budgetPercentage: number = 0;
+  showBudgetWarning: boolean = false;
 
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.loadSummary();
+    this.loadBudget();
   }
 
   loadSummary() {
@@ -71,5 +76,74 @@ export class DashboardComponent implements OnInit {
 
   getCurrentMonthTotal(): number {
     return this.currentMonthTotal;
+  }
+
+  loadBudget() {
+    this.apiService.getCurrentBudget().subscribe({
+      next: (budget) => {
+        this.budgetLimit = budget.monthlyLimit;
+        this.calculateBudgetPercentage();
+      },
+      error: () => {
+        this.budgetLimit = 0;
+      }
+    });
+  }
+
+  calculateBudgetPercentage() {
+    if (this.budgetLimit > 0) {
+      this.budgetPercentage = (this.currentMonthTotal / this.budgetLimit) * 100;
+      this.showBudgetWarning = this.budgetPercentage >= 80;
+    }
+  }
+
+  setBudget() {
+    Swal.fire({
+      title: 'Set Monthly Budget',
+      input: 'number',
+      inputLabel: 'Enter your monthly budget limit',
+      inputPlaceholder: 'e.g., 5000',
+      showCancelButton: true,
+      confirmButtonColor: '#667eea',
+      cancelButtonColor: '#999',
+      confirmButtonText: 'Set Budget',
+      inputValidator: (value) => {
+        if (!value || parseFloat(value) <= 0) {
+          return 'Please enter a valid amount!';
+        }
+        return null;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const budget = {
+          monthlyLimit: parseFloat(result.value),
+          month: new Date().getMonth() + 1,
+          year: new Date().getFullYear()
+        };
+
+        this.apiService.setBudget(budget).subscribe({
+          next: () => {
+            this.budgetLimit = budget.monthlyLimit;
+            this.calculateBudgetPercentage();
+            Swal.fire({
+              icon: 'success',
+              title: 'Budget Set!',
+              text: `Monthly budget set to ${budget.monthlyLimit}`,
+              timer: 2000,
+              showConfirmButton: false,
+              iconColor: '#667eea'
+            });
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to set budget',
+              confirmButtonColor: '#667eea'
+            });
+          }
+        });
+      }
+    });
   }
 }
