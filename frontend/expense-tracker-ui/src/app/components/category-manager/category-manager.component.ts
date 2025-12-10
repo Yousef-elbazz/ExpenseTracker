@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ApiService } from '../../services/api.service';
 import { Category } from '../../models/category';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-category-manager',
@@ -15,7 +16,7 @@ import { Category } from '../../models/category';
   imports: [
     CommonModule,
     FormsModule,
-    MatListModule,
+    MatCardModule,
     MatIconModule,
     MatButtonModule,
     MatInputModule,
@@ -35,26 +36,83 @@ export class CategoryManagerComponent implements OnInit {
   }
 
   loadCategories() {
-    this.apiService.getCategories().subscribe(data => {
-      this.categories = data;
+    this.apiService.getCategories().subscribe({
+      next: (data) => {
+        this.categories = data;
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to load categories',
+          confirmButtonColor: '#667eea'
+        });
+      }
     });
   }
 
   addCategory() {
     if (this.newCategoryName.trim()) {
       const newCategory: Category = { id: 0, name: this.newCategoryName };
-      this.apiService.addCategory(newCategory).subscribe(category => {
-        this.categories.push(category);
-        this.newCategoryName = '';
+      this.apiService.addCategory(newCategory).subscribe({
+        next: (category) => {
+          this.categories.push(category);
+          this.newCategoryName = '';
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: `Category "${category.name}" added successfully`,
+            timer: 2000,
+            showConfirmButton: false,
+            iconColor: '#667eea'
+          });
+        },
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to add category',
+            confirmButtonColor: '#667eea'
+          });
+        }
       });
     }
   }
 
   deleteCategory(id: number) {
-    if (confirm('Are you sure you want to delete this category?')) {
-      this.apiService.deleteCategory(id).subscribe(() => {
-        this.categories = this.categories.filter(c => c.id !== id);
-      });
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#667eea',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.apiService.deleteCategory(id).subscribe({
+          next: () => {
+            this.categories = this.categories.filter(c => c.id !== id);
+            Swal.fire({
+              icon: 'success',
+              title: 'Deleted!',
+              text: 'Category has been deleted.',
+              timer: 2000,
+              showConfirmButton: false,
+              iconColor: '#667eea'
+            });
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to delete category',
+              confirmButtonColor: '#667eea'
+            });
+          }
+        });
+      }
+    });
   }
 }

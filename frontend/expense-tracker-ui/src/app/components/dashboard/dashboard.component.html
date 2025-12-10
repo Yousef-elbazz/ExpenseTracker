@@ -1,22 +1,81 @@
-<div class="dashboard-container">
-  <h1>Dashboard</h1>
+<div class="dashboard-container fade-in">
+  <div class="page-header">
+    <h1>
+      <mat-icon>dashboard</mat-icon>
+      Dashboard Overview
+    </h1>
+    <p class="subtitle">Track and manage your expenses efficiently</p>
+  </div>
 
   <div class="summary-cards">
-    <mat-card class="total-card">
-      <mat-card-header>
-        <mat-card-title>Total Expenses</mat-card-title>
-      </mat-card-header>
+    <mat-card class="total-card gradient-card">
       <mat-card-content>
-        <h2 class="amount">{{ totalAmount | currency }}</h2>
+        <div class="card-icon">
+          <mat-icon>account_balance_wallet</mat-icon>
+        </div>
+        <div class="card-details">
+          <p class="card-label">Total Expenses</p>
+          <h2 class="amount">{{ totalAmount | currency }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="info-card">
+      <mat-card-content>
+        <div class="card-icon info-icon">
+          <mat-icon>receipt_long</mat-icon>
+        </div>
+        <div class="card-details">
+          <p class="card-label">Total Transactions</p>
+          <h2 class="count">{{ monthlySummary.length }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="success-card">
+      <mat-card-content>
+        <div class="card-icon success-icon">
+          <mat-icon>trending_up</mat-icon>
+        </div>
+        <div class="card-details">
+          <p class="card-label">This Month</p>
+          <h2 class="month-amount">{{ getCurrentMonthTotal() | currency }}</h2>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
 
-  <div class="monthly-summary">
-    <h3>Monthly Breakdown</h3>
-    <div *ngFor="let item of monthlySummary" class="month-item">
-      <span>{{ item.month }}</span>
-      <span>{{ item.total | currency }}</span>
-    </div>
-  </div>
+  <mat-card class="monthly-summary-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>calendar_month</mat-icon>
+        Monthly Breakdown
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="monthly-list" *ngIf="monthlySummary.length > 0; else noData">
+        <div *ngFor="let item of monthlySummary; let i = index" 
+             class="month-item slide-in"
+             [style.animation-delay]="i * 0.1 + 's'">
+          <div class="month-info">
+            <mat-icon class="month-icon">date_range</mat-icon>
+            <span class="month-name">{{ item.month }}</span>
+          </div>
+          <div class="month-amount-wrapper">
+            <span class="month-total">{{ item.total | currency }}</span>
+            <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+          </div>
+        </div>
+      </div>
+      <ng-template #noData>
+        <div class="no-data">
+          <mat-icon>info_outline</mat-icon>
+          <p>No expense data available yet</p>
+          <button mat-raised-button color="primary" routerLink="/add-expense">
+            Add Your First Expense
+          </button>
+        </div>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
 </div>

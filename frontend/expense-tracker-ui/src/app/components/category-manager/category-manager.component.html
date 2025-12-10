@@ -1,22 +1,63 @@
-<div class="category-container">
-    <h1>Manage Categories</h1>
-
-    <div class="add-category-form">
-        <mat-form-field appearance="outline">
-            <mat-label>New Category Name</mat-label>
-            <input matInput [(ngModel)]="newCategoryName" (keyup.enter)="addCategory()">
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="addCategory()" [disabled]="!newCategoryName.trim()">
-            Add
-        </button>
+<div class="category-container fade-in">
+    <div class="page-header">
+        <h1>
+            <mat-icon>category</mat-icon>
+            Manage Categories
+        </h1>
+        <p class="subtitle">Organize your expenses efficiently</p>
     </div>
 
-    <mat-list>
-        <mat-list-item *ngFor="let category of categories">
-            <span matListItemTitle>{{ category.name }}</span>
-            <button mat-icon-button color="warn" (click)="deleteCategory(category.id)">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </mat-list-item>
-    </mat-list>
+    <mat-card class="add-category-card">
+        <mat-card-content>
+            <div class="add-category-form">
+                <mat-form-field appearance="outline" class="category-input">
+                    <mat-label>New Category Name</mat-label>
+                    <mat-icon matPrefix>label</mat-icon>
+                    <input matInput [(ngModel)]="newCategoryName" (keyup.enter)="addCategory()" placeholder="e.g., Food, Transport, Entertainment">
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="addCategory()" [disabled]="!newCategoryName.trim()" class="add-btn">
+                    <mat-icon>add</mat-icon>
+                    Add Category
+                </button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="categories-list-card" *ngIf="categories.length > 0; else noCategories">
+        <mat-card-header>
+            <mat-card-title>
+                <mat-icon>list</mat-icon>
+                Your Categories
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="categories-grid">
+                <div *ngFor="let category of categories; let i = index" 
+                     class="category-item slide-in"
+                     [style.animation-delay]="i * 0.05 + 's'">
+                    <div class="category-content">
+                        <div class="category-icon-wrapper">
+                            <mat-icon class="category-icon">folder</mat-icon>
+                        </div>
+                        <span class="category-name">{{ category.name }}</span>
+                    </div>
+                    <button mat-mini-fab color="warn" (click)="deleteCategory(category.id)" class="delete-btn">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <ng-template #noCategories>
+        <mat-card class="no-categories-card">
+            <mat-card-content>
+                <div class="no-data">
+                    <mat-icon>folder_off</mat-icon>
+                    <h3>No Categories Yet</h3>
+                    <p>Start by adding your first category to organize your expenses</p>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </ng-template>
 </div>

@@ -1,7 +1,202 @@
 .history-container {
-    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-table {
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.page-header h1 mat-icon {
+    font-size: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.page-header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.table-card {
+    background: white;
+    overflow: hidden;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.modern-table {
     width: 100%;
+    background: white;
+}
+
+::ng-deep .mat-mdc-header-row {
+    height: 64px;
+}
+
+::ng-deep .mat-mdc-header-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px !important;
+}
+
+::ng-deep .mat-mdc-header-cell mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+::ng-deep .mat-mdc-row {
+    height: 72px;
+}
+
+.table-row {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.table-row:hover {
+    background-color: #f8f9ff !important;
+    transform: scale(1.01);
+}
+
+.date-cell {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background: #e3f2fd;
+    color: #1976d2;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.description-cell {
+    font-weight: 500;
+    color: #333;
+    font-size: 1rem;
+}
+
+.category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.category-badge mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.amount-cell {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-btn, .delete-btn {
+    width: 40px !important;
+    height: 40px !important;
+    transition: all 0.3s ease !important;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+    transform: scale(1.1);
+}
+
+.no-expenses-card {
+    background: white;
+}
+
+.no-data {
+    text-align: center;
+    padding: 80px 20px;
+    color: #999;
+}
+
+.no-data mat-icon {
+    font-size: 100px;
+    width: 100px;
+    height: 100px;
+    color: #ddd;
+    margin-bottom: 24px;
+}
+
+.no-data h3 {
+    font-size: 1.8rem;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.no-data p {
+    font-size: 1.1rem;
+    margin-bottom: 32px;
+}
+
+.add-first-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    padding: 0 32px !important;
+    height: 48px !important;
+    border-radius: 24px !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+}
+
+.add-first-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .table-wrapper {
+        overflow-x: scroll;
+    }
+
+    .modern-table {
+        min-width: 800px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 4px;
+    }
 }

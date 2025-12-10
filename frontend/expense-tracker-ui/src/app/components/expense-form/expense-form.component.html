@@ -1,50 +1,79 @@
-<div class="form-container">
-    <h1>{{ isEditMode ? 'Edit Expense' : 'Add Expense' }}</h1>
+<div class="form-container fade-in">
+    <mat-card class="form-card">
+        <mat-card-header>
+            <div class="header-content">
+                <mat-icon class="form-icon">{{ isEditMode ? 'edit' : 'add_circle' }}</mat-icon>
+                <div class="header-text">
+                    <mat-card-title>{{ isEditMode ? 'Edit Expense' : 'Add New Expense' }}</mat-card-title>
+                    <mat-card-subtitle>{{ isEditMode ? 'Update your expense details' : 'Track your spending easily' }}</mat-card-subtitle>
+                </div>
+            </div>
+        </mat-card-header>
 
-    <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline">
-            <mat-label>Description</mat-label>
-            <input matInput formControlName="description">
-            <mat-error *ngIf="expenseForm.get('description')?.hasError('required')">
-                Description is required
-            </mat-error>
-        </mat-form-field>
+        <mat-card-content>
+            <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
+                <div class="form-row">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Description</mat-label>
+                        <mat-icon matPrefix>description</mat-icon>
+                        <input matInput formControlName="description" placeholder="e.g., Grocery shopping">
+                        <mat-error *ngIf="expenseForm.get('description')?.hasError('required')">
+                            Description is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Amount</mat-label>
-            <input matInput type="number" formControlName="amount">
-            <mat-error *ngIf="expenseForm.get('amount')?.hasError('required')">
-                Amount is required
-            </mat-error>
-        </mat-form-field>
+                <div class="form-row">
+                    <mat-form-field appearance="outline" class="half-width">
+                        <mat-label>Amount</mat-label>
+                        <mat-icon matPrefix>attach_money</mat-icon>
+                        <input matInput type="number" formControlName="amount" placeholder="0.00" step="0.01">
+                        <mat-error *ngIf="expenseForm.get('amount')?.hasError('required')">
+                            Amount is required
+                        </mat-error>
+                        <mat-error *ngIf="expenseForm.get('amount')?.hasError('min')">
+                            Amount must be greater than 0
+                        </mat-error>
+                    </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Date</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="date">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="expenseForm.get('date')?.hasError('required')">
-                Date is required
-            </mat-error>
-        </mat-form-field>
+                    <mat-form-field appearance="outline" class="half-width">
+                        <mat-label>Date</mat-label>
+                        <mat-icon matPrefix>event</mat-icon>
+                        <input matInput [matDatepicker]="picker" formControlName="date">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="expenseForm.get('date')?.hasError('required')">
+                            Date is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Category</mat-label>
-            <mat-select formControlName="categoryId">
-                <mat-option *ngFor="let category of categories" [value]="category.id">
-                    {{ category.name }}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="expenseForm.get('categoryId')?.hasError('required')">
-                Category is required
-            </mat-error>
-        </mat-form-field>
+                <div class="form-row">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Category</mat-label>
+                        <mat-icon matPrefix>category</mat-icon>
+                        <mat-select formControlName="categoryId">
+                            <mat-option *ngFor="let category of categories" [value]="category.id">
+                                {{ category.name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="expenseForm.get('categoryId')?.hasError('required')">
+                            Category is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
 
-        <div class="actions">
-            <button mat-button type="button" (click)="onCancel()">Cancel</button>
-            <button mat-raised-button color="primary" type="submit" [disabled]="expenseForm.invalid">
-                {{ isEditMode ? 'Update' : 'Save' }}
-            </button>
-        </div>
-    </form>
+                <div class="actions">
+                    <button mat-stroked-button type="button" (click)="onCancel()" class="cancel-btn">
+                        <mat-icon>close</mat-icon>
+                        Cancel
+                    </button>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="expenseForm.invalid" class="submit-btn">
+                        <mat-icon>{{ isEditMode ? 'check' : 'save' }}</mat-icon>
+                        {{ isEditMode ? 'Update' : 'Save' }}
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
 </div>

@@ -151,3 +151,4 @@ C:\Users\Dell\Downloads\ExpenseTracker\backend\ExpenseTracker.API\obj\Debug\net9
 C:\Users\Dell\Downloads\ExpenseTracker\backend\ExpenseTracker.API\obj\Debug\net9.0\ExpenseTracker.API.pdb
 C:\Users\Dell\Downloads\ExpenseTracker\backend\ExpenseTracker.API\obj\Debug\net9.0\ExpenseTracker.API.genruntimeconfig.cache
 C:\Users\Dell\Downloads\ExpenseTracker\backend\ExpenseTracker.API\obj\Debug\net9.0\ref\ExpenseTracker.API.dll
+C:\Users\Dell\Downloads\ExpenseTracker\backend\ExpenseTracker.API\obj\Debug\net9.0\ExpenseTracker.API.sourcelink.json

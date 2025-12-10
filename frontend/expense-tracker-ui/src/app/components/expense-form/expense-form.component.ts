@@ -7,10 +7,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Category } from '../../models/category';
 import { Expense } from '../../models/expense';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-expense-form',
@@ -23,7 +26,9 @@ import { Expense } from '../../models/expense';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule
   ],
   templateUrl: './expense-form.component.html',
   styleUrl: './expense-form.component.css'
@@ -61,24 +66,40 @@ export class ExpenseFormComponent implements OnInit {
   }
 
   loadCategories() {
-    this.apiService.getCategories().subscribe(data => {
-      this.categories = data;
+    this.apiService.getCategories().subscribe({
+      next: (data) => {
+        this.categories = data;
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to load categories',
+          confirmButtonColor: '#667eea'
+        });
+      }
     });
   }
 
   loadExpense(id: number) {
-    // Since we don't have getExpenseById in ApiService (I missed it in plan), 
-    // I should add it or just find it from list if list is cached, 
-    // but better to add it or just use getExpenses and find.
-    // For simplicity, I'll fetch all and find. Ideally should be an endpoint.
-    this.apiService.getExpenses().subscribe(expenses => {
-      const expense = expenses.find(e => e.id === id);
-      if (expense) {
-        this.expenseForm.patchValue({
-          description: expense.description,
-          amount: expense.amount,
-          date: expense.date,
-          categoryId: expense.categoryId
+    this.apiService.getExpenses().subscribe({
+      next: (expenses) => {
+        const expense = expenses.find(e => e.id === id);
+        if (expense) {
+          this.expenseForm.patchValue({
+            description: expense.description,
+            amount: expense.amount,
+            date: expense.date,
+            categoryId: expense.categoryId
+          });
+        }
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to load expense',
+          confirmButtonColor: '#667eea'
         });
       }
     });
@@ -92,12 +113,52 @@ export class ExpenseFormComponent implements OnInit {
       };
 
       if (this.isEditMode && this.expenseId) {
-        this.apiService.updateExpense(this.expenseId, expenseData).subscribe(() => {
-          this.router.navigate(['/history']);
+        this.apiService.updateExpense(this.expenseId, expenseData).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Expense updated successfully',
+              timer: 2000,
+              showConfirmButton: false,
+              background: '#fff',
+              iconColor: '#667eea'
+            }).then(() => {
+              this.router.navigate(['/history']);
+            });
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to update expense',
+              confirmButtonColor: '#667eea'
+            });
+          }
         });
       } else {
-        this.apiService.addExpense(expenseData).subscribe(() => {
-          this.router.navigate(['/dashboard']);
+        this.apiService.addExpense(expenseData).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Expense added successfully',
+              timer: 2000,
+              showConfirmButton: false,
+              background: '#fff',
+              iconColor: '#667eea'
+            }).then(() => {
+              this.router.navigate(['/dashboard']);
+            });
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to add expense',
+              confirmButtonColor: '#667eea'
+            });
+          }
         });
       }
     }
