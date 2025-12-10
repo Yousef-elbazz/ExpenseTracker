@@ -1,0 +1,22 @@
+<div class="dashboard-container">
+  <h1>Dashboard</h1>
+
+  <div class="summary-cards">
+    <mat-card class="total-card">
+      <mat-card-header>
+        <mat-card-title>Total Expenses</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <h2 class="amount">{{ totalAmount | currency }}</h2>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="monthly-summary">
+    <h3>Monthly Breakdown</h3>
+    <div *ngFor="let item of monthlySummary" class="month-item">
+      <span>{{ item.month }}</span>
+      <span>{{ item.total | currency }}</span>
+    </div>
+  </div>
+</div>

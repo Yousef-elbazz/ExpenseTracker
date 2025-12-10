@@ -1,0 +1,15 @@
+.category-container {
+    padding: 20px;
+    max-width: 600px;
+}
+
+.add-category-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+mat-form-field {
+    flex: 1;
+}

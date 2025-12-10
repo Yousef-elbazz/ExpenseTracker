@@ -1,0 +1,50 @@
+<div class="form-container">
+    <h1>{{ isEditMode ? 'Edit Expense' : 'Add Expense' }}</h1>
+
+    <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description">
+            <mat-error *ngIf="expenseForm.get('description')?.hasError('required')">
+                Description is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" formControlName="amount">
+            <mat-error *ngIf="expenseForm.get('amount')?.hasError('required')">
+                Amount is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="expenseForm.get('date')?.hasError('required')">
+                Date is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="categoryId">
+                <mat-option *ngFor="let category of categories" [value]="category.id">
+                    {{ category.name }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="expenseForm.get('categoryId')?.hasError('required')">
+                Category is required
+            </mat-error>
+        </mat-form-field>
+
+        <div class="actions">
+            <button mat-button type="button" (click)="onCancel()">Cancel</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="expenseForm.invalid">
+                {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+        </div>
+    </form>
+</div>
