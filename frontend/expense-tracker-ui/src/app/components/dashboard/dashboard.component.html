@@ -27,7 +27,7 @@
         </div>
         <div class="card-details">
           <p class="card-label">Total Transactions</p>
-          <h2 class="count">{{ monthlySummary.length }}</h2>
+          <h2 class="count">{{ totalTransactions }}</h2>
         </div>
       </mat-card-content>
     </mat-card>
@@ -39,7 +39,7 @@
         </div>
         <div class="card-details">
           <p class="card-label">This Month</p>
-          <h2 class="month-amount">{{ getCurrentMonthTotal() | currency }}</h2>
+          <h2 class="month-amount">{{ currentMonthTotal | currency }}</h2>
         </div>
       </mat-card-content>
     </mat-card>
