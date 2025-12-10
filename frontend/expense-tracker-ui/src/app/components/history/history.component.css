@@ -48,12 +48,13 @@
 
 ::ng-deep .mat-mdc-header-row {
     height: 64px;
+    display: table-row !important;
 }
 
 ::ng-deep .mat-mdc-header-cell {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: table-cell !important;
+    vertical-align: middle !important;
+    padding: 16px !important;
     font-size: 14px !important;
 }
 
@@ -61,10 +62,19 @@
     font-size: 20px;
     width: 20px;
     height: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
 }
 
 ::ng-deep .mat-mdc-row {
     height: 72px;
+    display: table-row !important;
+}
+
+::ng-deep .mat-mdc-cell {
+    display: table-cell !important;
+    vertical-align: middle !important;
+    padding: 16px !important;
 }
 
 .table-row {
