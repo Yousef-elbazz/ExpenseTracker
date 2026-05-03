@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -16,7 +15,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Add service layer (Dependency Inversion Principle)
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
-// Add CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
