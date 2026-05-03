@@ -5162,11 +5162,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Dell\\Downloads\\ExpenseTracker\\backend\\ExpenseTracker.API\\ExpenseTracker.API.csproj",
+      "projectUniqueName": "E:\\Downloads\\ExpenseTracker\\backend\\ExpenseTracker.API\\ExpenseTracker.API.csproj",
       "projectName": "ExpenseTracker.API",
-      "projectPath": "C:\\Users\\Dell\\Downloads\\ExpenseTracker\\backend\\ExpenseTracker.API\\ExpenseTracker.API.csproj",
+      "projectPath": "E:\\Downloads\\ExpenseTracker\\backend\\ExpenseTracker.API\\ExpenseTracker.API.csproj",
       "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Dell\\Downloads\\ExpenseTracker\\backend\\ExpenseTracker.API\\obj\\",
+      "outputPath": "E:\\Downloads\\ExpenseTracker\\backend\\ExpenseTracker.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

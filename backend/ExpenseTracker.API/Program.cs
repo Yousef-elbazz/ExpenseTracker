@@ -1,4 +1,5 @@
 using ExpenseTracker.API.Data;
+using ExpenseTracker.API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,9 @@ builder.Services.AddSwaggerGen();
 // Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add service layer (Dependency Inversion Principle)
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 // Add CORS
 builder.Services.AddCors(options =>

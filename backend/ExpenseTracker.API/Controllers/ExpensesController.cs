@@ -1,6 +1,5 @@
-using ExpenseTracker.API.Data;
 using ExpenseTracker.API.Models;
-using Microsoft.EntityFrameworkCore;
+using ExpenseTracker.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseTracker.API.Controllers
@@ -9,83 +8,64 @@ namespace ExpenseTracker.API.Controllers
     [ApiController]
     public class ExpensesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IExpenseService _expenseService;
 
-        public ExpensesController(AppDbContext context)
+        public ExpensesController(IExpenseService expenseService)
         {
-            _context = context;
+            _expenseService = expenseService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Expense>>> GetExpenses()
         {
-            return await _context.Expenses.Include(e => e.Category).OrderByDescending(e => e.Date).ToListAsync();
+            var expenses = await _expenseService.GetAllExpensesAsync();
+            return Ok(expenses);
         }
 
         [HttpGet("summary")]
         public async Task<ActionResult<object>> GetMonthlySummary()
         {
-            var expenses = await _context.Expenses.ToListAsync();
-            var total = expenses.Sum(e => e.Amount);
-            var monthly = expenses.GroupBy(e => new { e.Date.Year, e.Date.Month })
-                                  .Select(g => new { Month = $"{g.Key.Month}/{g.Key.Year}", Total = g.Sum(e => e.Amount) })
-                                  .OrderByDescending(x => x.Month) // Simplified sorting
-                                  .ToList();
-
-            return new { Total = total, Monthly = monthly };
+            var summary = await _expenseService.GetMonthlySummaryAsync();
+            return Ok(summary);
         }
 
         [HttpPost]
         public async Task<ActionResult<Expense>> PostExpense(Expense expense)
         {
-            _context.Expenses.Add(expense);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetExpenses", new { id = expense.Id }, expense);
+            var createdExpense = await _expenseService.CreateExpenseAsync(expense);
+            return CreatedAtAction("GetExpenses", new { id = createdExpense.Id }, createdExpense);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutExpense(int id, Expense expense)
         {
-            if (id != expense.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(expense).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _expenseService.UpdateExpenseAsync(id, expense);
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (ArgumentException)
             {
-                if (!_context.Expenses.Any(e => e.Id == id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest("Expense ID mismatch");
             }
-
-            return NoContent();
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExpense(int id)
         {
-            var expense = await _context.Expenses.FindAsync(id);
-            if (expense == null)
+            try
+            {
+                await _expenseService.DeleteExpenseAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            _context.Expenses.Remove(expense);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
     }
 }
