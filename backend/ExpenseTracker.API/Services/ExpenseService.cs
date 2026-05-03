@@ -17,9 +17,7 @@ namespace ExpenseTracker.API.Services
             _context = context;
         }
 
-        /// <summary>
-        /// Retrieves all expenses with their associated categories.
-        /// </summary>
+    
         public async Task<IEnumerable<Expense>> GetAllExpensesAsync()
         {
             return await _context.Expenses
@@ -28,9 +26,7 @@ namespace ExpenseTracker.API.Services
                 .ToListAsync();
         }
 
-        /// <summary>
-        /// Gets total and monthly expense summary.
-        /// </summary>
+    
         public async Task<object> GetMonthlySummaryAsync()
         {
             var expenses = await _context.Expenses.ToListAsync();
@@ -48,9 +44,7 @@ namespace ExpenseTracker.API.Services
             return new { Total = total, Monthly = monthly };
         }
 
-        /// <summary>
-        /// Creates a new expense record.
-        /// </summary>
+      
         public async Task<Expense> CreateExpenseAsync(Expense expense)
         {
             _context.Expenses.Add(expense);
@@ -58,9 +52,6 @@ namespace ExpenseTracker.API.Services
             return expense;
         }
 
-        /// <summary>
-        /// Updates an existing expense record.
-        /// </summary>
         public async Task UpdateExpenseAsync(int id, Expense expense)
         {
             if (id != expense.Id)
@@ -95,9 +86,6 @@ namespace ExpenseTracker.API.Services
             }
         }
 
-        /// <summary>
-        /// Deletes an expense record by ID.
-        /// </summary>
         public async Task DeleteExpenseAsync(int id)
         {
             var expense = await _context.Expenses.FindAsync(id);

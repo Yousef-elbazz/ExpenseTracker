@@ -2,10 +2,7 @@ using ExpenseTracker.API.Models;
 
 namespace ExpenseTracker.API.Services
 {
-    /// <summary>
-    /// Interface for Expense business logic (Dependency Inversion Principle).
-    /// Controllers depend on abstraction, not concrete implementations.
-    /// </summary>
+    
     public interface IExpenseService
     {
         Task<IEnumerable<Expense>> GetAllExpensesAsync();
